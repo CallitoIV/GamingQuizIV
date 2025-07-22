@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GamingQuizIV Board</title>
+<style>
+  body {
+    margin: 0;
+    background: #1a1a1a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+  h1 {
+    text-align: center;
+    font-family: 'Press Start 2P', monospace;
+    color: #00ffe5;
+    margin: 15px 0;
+    text-shadow: 0 0 5px #00ffe5,0 0 10px #00ffe5;
+    font-size: 32px;
+  }
+  table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    transform: scale(1.2,1.05);
+    transform-origin: top center;
+  }
+  th {
+    padding: 12px 20px;
+    background: #2a2a2a;
+    font-size: 24px;
+  }
+  td {
+    width: 160px;
+    height: 90px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  td:hover { transform: scale(1.1); }
+  .pink { background: #ff6b81; }
+  .blue { background: #7b5cff; }
+  .used {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(100%);
+    transition: opacity 0.3s ease;
+  }
+  #overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    z-index: 999;
+  }
+  #overlay .question-box {
+    background: #222;
+    border: 2px solid #00ffe5;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 900px;
+    font-size: 30px;
+  }
+  #overlay img {
+    margin-top: 20px;
+    max-width: 90%;
+    max-height: 400px;
+    border-radius: 12px;
+    border: 3px solid #00ffe5;
+    box-shadow: 0 0 15px #00ffe5;
+  }
+  #overlay button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 22px;
+    background: #ff6b81;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .facecam-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 40px;
+  }
+  .facecam-box {
+    width: 300px;
+    height: 220px;
+    border: 4px solid #00ffe5;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #00ffe5;
+    background: rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .score-input {
+    position: absolute;
+    top: -50px; /* jetzt über der Facecam */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    padding: 6px 12px;
+    border: 2px solid #00ffe5;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #00ffe5;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+  }
+  .score-input label {
+    margin-right: 6px;
+    font-size: 18px;
+  }
+  .score-input input {
+    width: 80px;
+    font-size: 20px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+  }
+</style>
+</head>
+<body>
+
+<h1>GamingQuizIV</h1>
+
+<table>
+  <tr>
+    <th>Trivia</th>
+    <th>Emojies</th>
+    <th>HUD</th>
+    <th>Listening</th>
+    <th>Firma Wand</th>
+  </tr>
+  <tr>
+    <td class="pink" onclick="showQuestion('Trivia 200: Welche Figur springt auf Gumbas?', null, this)">200</td>
+    <td class="blue" onclick="showQuestion('Emojies 200: Erkenne das Logo!', null, this)">200</td>
+    <td class="pink" onclick="showQuestion('HUD 200: Geheimfrage!', 'https://upload.wikimedia.org/wikipedia/en/3/35/The_Legend_of_Zelda_Logo.png', this)">200</td>
+    <td class="blue" onclick="showQuestion('Listening 200: Wie viele Pokémon?', null, this)">200</td>
+    <td class="pink" onclick="showQuestion('Firma Wand 200: Aus welchem Spiel ist diese Musik?', null, this)">200</td>
+  </tr>
+  <tr>
+    <td class="pink" onclick="showQuestion('Trivia 400: Wer ist Link?', null, this)">400</td>
+    <td class="blue" onclick="showQuestion('Emojies 400: Rate das Spiel!', null, this)">400</td>
+    <td class="pink" onclick="showQuestion('HUD 400: Bonusfrage!', 'https://upload.wikimedia.org/wikipedia/en/6/6b/Metroid_logo.png', this)">400</td>
+    <td class="blue" onclick="showQuestion('Listening 400: Wie viele Münzen?', null, this)">400</td>
+    <td class="pink" onclick="showQuestion('Firma Wand 400: Kenne den Sound!', null, this)">400</td>
+  </tr>
+  <tr>
+    <td class="pink" onclick="showQuestion('Trivia 600: Wer ist Link?', null, this)">600</td>
+    <td class="blue" onclick="showQuestion('Emojies 600: Rate das Spiel!', null, this)">600</td>
+    <td class="pink" onclick="showQuestion('HUD 600: Bonusfrage!', 'https://upload.wikimedia.org/wikipedia/en/6/6b/Metroid_logo.png', this)">600</td>
+    <td class="blue" onclick="showQuestion('Listening 600: Wie viele Münzen?', null, this)">600</td>
+    <td class="pink" onclick="showQuestion('Firma Wand 600: Kenne den Sound!', null, this)">600</td>
+  </tr>
+  <tr>
+    <td class="pink" onclick="showQuestion('Trivia 800: Wer ist Link?', null, this)">800</td>
+    <td class="blue" onclick="showQuestion('Emojies 800: Rate das Spiel!', null, this)">800</td>
+    <td class="pink" onclick="showQuestion('HUD 800: Bonusfrage!', 'https://upload.wikimedia.org/wikipedia/en/6/6b/Metroid_logo.png', this)">800</td>
+    <td class="blue" onclick="showQuestion('Listening 800: Wie viele Münzen?', null, this)">800</td>
+    <td class="pink" onclick="showQuestion('Firma Wand 800: Kenne den Sound!', null, this)">800</td>
+  </tr>
+  <tr>
+    <td class="pink" onclick="showQuestion('Trivia 1000: Wer ist Link?', null, this)">1000</td>
+    <td class="blue" onclick="showQuestion('Emojies 1000: Rate das Spiel!', null, this)">1000</td>
+    <td class="pink" onclick="showQuestion('HUD 1000: Bonusfrage!', 'HUD 1.png', this)">1000</td>
+    <td class="blue" onclick="showQuestion('Listening 1000: Wie viele Münzen?', null, this)">1000</td>
+    <td class="pink" onclick="showQuestion('Firma Wand 1000: Kenne den Sound!', null, this)">1000</td>
+  </tr>
+</table>
+
+<!-- Facecams mit Score -->
+<div class="facecam-container">
+  <div class="facecam-box">
+    <div class="score-input">
+      <label>P1:</label>
+      <input type="number" value="0">
+    </div>
+  </div>
+  <div class="facecam-box">
+    <div class="score-input">
+      <label>P2:</label>
+      <input type="number" value="0">
+    </div>
+  </div>
+  <div class="facecam-box">
+    <div class="score-input">
+      <label>P3:</label>
+      <input type="number" value="0">
+    </div>
+  </div>
+  <div class="facecam-box">
+    <div class="score-input">
+      <label>P4:</label>
+      <input type="number" value="0">
+    </div>
+  </div>
+</div>
+
+<div id="overlay">
+  <div class="question-box">
+    <div id="question-text"></div>
+    <img id="question-image" style="display:none;">
+    <button onclick="closeQuestion()">Schließen</button>
+  </div>
+</div>
+
+<audio id="soundOpen" src="open.mp3" preload="auto"></audio>
+<audio id="soundClose" src="close.mp3" preload="auto"></audio>
+
+<script>
+  function playSound(id) {
+    const audio = document.getElementById(id);
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
+  }
+  function showQuestion(text, imageUrl = null, cell = null) {
+    document.getElementById('question-text').textContent = text;
+    const img = document.getElementById('question-image');
+    if (imageUrl) {
+      img.src = imageUrl;
+      img.style.display = 'block';
+    } else {
+      img.style.display = 'none';
+    }
+    document.getElementById('overlay').style.display = 'flex';
+    if (cell) cell.classList.add('used');
+    playSound('soundOpen');
+  }
+  function closeQuestion() {
+    document.getElementById('overlay').style.display = 'none';
+    playSound('soundClose');
+  }
+</script>
+
+</body>
+</html>
